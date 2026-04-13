@@ -3,68 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation</title>
+    <title>Wedding Invitation - Rimjhim & Laddu</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            transition: background-color 0.5s;
+            background: linear-gradient(135deg, #f8f3eb 0%, #ede5d8 100%);
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bgPulse 8s ease-in-out infinite;
         }
-        .invitation {
-            perspective: 1000px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1s;
+
+        @keyframes bgPulse {
+            0%, 100% { background: linear-gradient(135deg, #f8f3eb 0%, #ede5d8 100%); }
+            50% { background: linear-gradient(135deg, #faf7f2 0%, #efe8db 100%); }
         }
-        .invitation:hover {
-            transform: rotateY(180deg);
-        }
+
         .card {
-            width: 300px;
-            height: 200px;
-            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+            cursor: pointer;
+            animation: cardLoad 1s ease-out forwards;
         }
-        .front, .back {
+
+        @keyframes cardLoad {
+            from {
+                opacity: 0;
+                transform: scale(0.95) rotateX(20deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        .card:hover {
+            filter: brightness(1.02);
+        }
+
+        .book {
+            width: 95%;
+            height: 95%;
+            position: relative;
+            filter: drop-shadow(0 20px 60px rgba(139, 90, 43, 0.25));
+            animation: bookFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes bookFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .page {
             position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             backface-visibility: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        .front {
-            background-color: #fff;
-            z-index: 2;
+
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: imageZoom 1.2s ease-out forwards;
         }
-        .back {
-            background-color: #f0f0f0;
-            transform: rotateY(180deg);
+
+        @keyframes imageZoom {
+            from {
+                opacity: 0;
+                transform: scale(1.05) blur(5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) blur(0px);
+            }
         }
-        h1, p {
-            margin: 15px;
-            transition: color 0.5s;
+
+        .page:nth-child(1) { z-index: 4; }
+        .page:nth-child(2) { z-index: 3; }
+        .page:nth-child(3) { z-index: 2; }
+        .page:nth-child(4) { z-index: 1; }
+
+        .flipped {
+            transform: rotateY(-180deg) rotateX(5deg) !important;
+            filter: drop-shadow(0 15px 40px rgba(0, 0, 0, 0.3));
         }
-        .invitation:hover h1, .invitation:hover p {
-            color: #ff4081;
+
+        .page.flipped::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, transparent 50%);
+            animation: shadowFade 1.2s ease-out;
         }
-        @keyframes entrance {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
+
+        @keyframes shadowFade {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
-        .invitation {
-            animation: entrance 1s forwards;
+
+        .tap {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            animation: tapPulse 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes tapPulse {
+            0%, 100% {
+                opacity: 0.7;
+                transform: translateY(0px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-5px);
+            }
+        }
+
+        .page:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .page:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .page:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .page:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .progress {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            font-size: 14px;
+            color: #8b5a2b;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .progress:hover {
+            opacity: 1;
+        }
+
+        .page:nth-child(1) {
+            box-shadow: 0 0 40px rgba(139, 90, 43, 0.2), 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page, .card, .book, .tap {
+                animation: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tap {
+                font-size: 12px;
+                bottom: 20px;
+            }
+            
+            .progress {
+                font-size: 12px;
+                right: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="invitation">
-        <div class="card front">
-            <h1>You're Invited!</h1>
-            <p>Join us for a special day!</p>
-        </div>
-        <div class="card back">
-            <h1>Wedding Details</h1>
-            <p>Date: 2026-05-20</p>
-            <p>Location: Dream Venue</p>
+    <div class="card" onclick="flipPage()">
+        <div class="book">
+            <div class="page" id="p0">
+                <img src="page-invocation.png" alt="Wedding Invitation Cover">
+                <div class="tap">Tap to open</div>
+            </div>
+
+            <div class="page" id="p1">
+                <img src="page-functions.png" alt="Functions and Ceremonies">
+            </div>
+
+            <div class="page" id="p2">
+                <img src="page-couple.png" alt="Wedding Invitation">
+            </div>
+
+            <div class="page" id="p3">
+                <img src="page-savethedate.png" alt="Save the Date">
+            </div>
         </div>
     </div>
+
+    <div class="progress">
+        <span id="currentPage">1</span> / <span id="totalPages">4</span>
+    </div>
+
+    <script>
+        let current = 0;
+        const pages = document.querySelectorAll('.page');
+        const totalPages = pages.length;
+
+        function flipPage() {
+            if (current < pages.length) {
+                pages[current].classList.add('flipped');
+                current++;
+                document.getElementById('currentPage').textContent = current + 1;
+            } else {
+                pages.forEach(page => page.classList.remove('flipped'));
+                current = 0;
+                document.getElementById('currentPage').textContent = 1;
+            }
+        }
+
+        document.getElementById('totalPages').textContent = totalPages;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                flipPage();
+            } else if (e.key === 'ArrowLeft') {
+                if (current > 0) {
+                    pages[current - 1].classList.remove('flipped');
+                    current--;
+                    document.getElementById('currentPage').textContent = current + 1;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
